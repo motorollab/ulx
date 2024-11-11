@@ -92,63 +92,63 @@ thetime:help( "Shows you the server time." )
 ulx.adverts = ulx.adverts or {}
 local adverts = ulx.adverts -- For XGUI, too lazy to change all refs
 
-local function doAdvert( group, id )
+-- local function doAdvert( group, id )
 
-	if adverts[ group ][ id ] == nil then
-		if adverts[ group ].removed_last then
-			adverts[ group ].removed_last = nil
-			id = 1
-		else
-			id = #adverts[ group ]
-		end
-	end
+-- 	if adverts[ group ][ id ] == nil then
+-- 		if adverts[ group ].removed_last then
+-- 			adverts[ group ].removed_last = nil
+-- 			id = 1
+-- 		else
+-- 			id = #adverts[ group ]
+-- 		end
+-- 	end
 
-	local info = adverts[ group ][ id ]
+-- 	local info = adverts[ group ][ id ]
 
-	local message = string.gsub( info.message, "%%curmap%%", game.GetMap() )
-	message = string.gsub( message, "%%host%%", GetConVarString( "hostname" ) )
-	message = string.gsub( message, "%%ulx_version%%", ULib.pluginVersionStr( "ULX" ) )
+-- 	local message = string.gsub( info.message, "%%curmap%%", game.GetMap() )
+-- 	message = string.gsub( message, "%%host%%", GetConVarString( "hostname" ) )
+-- 	message = string.gsub( message, "%%ulx_version%%", ULib.pluginVersionStr( "ULX" ) )
 
-	if not info.len then -- tsay
-		local lines = ULib.explode( "\\n", message )
+-- 	if not info.len then -- tsay
+-- 		local lines = ULib.explode( "\\n", message )
 
-		for i, line in ipairs( lines ) do
-			local trimmed = line:Trim()
-			if trimmed:len() > 0 then
-				ULib.tsayColor( _, true, info.color, trimmed ) -- Delaying runs one message every frame (to ensure correct order)
-			end
-		end
-	else
-		ULib.csay( _, message, info.color, info.len )
-	end
+-- 		for i, line in ipairs( lines ) do
+-- 			local trimmed = line:Trim()
+-- 			if trimmed:len() > 0 then
+-- 				ULib.tsayColor( _, true, info.color, trimmed ) -- Delaying runs one message every frame (to ensure correct order)
+-- 			end
+-- 		end
+-- 	else
+-- 		ULib.csay( _, message, info.color, info.len )
+-- 	end
 
-	ULib.queueFunctionCall( function()
-		local nextid = math.fmod( id, #adverts[ group ] ) + 1
-		timer.Remove( "ULXAdvert" .. type( group ) .. group )
-		timer.Create( "ULXAdvert" .. type( group ) .. group, adverts[ group ][ nextid ].rpt, 1, function() doAdvert( group, nextid ) end )
-	end )
-end
+-- 	ULib.queueFunctionCall( function()
+-- 		local nextid = math.fmod( id, #adverts[ group ] ) + 1
+-- 		timer.Remove( "ULXAdvert" .. type( group ) .. group )
+-- 		timer.Create( "ULXAdvert" .. type( group ) .. group, adverts[ group ][ nextid ].rpt, 1, function() doAdvert( group, nextid ) end )
+-- 	end )
+-- end
 
 -- Whether or not it's a csay is determined by whether there's a value specified in "len"
 function ulx.addAdvert( message, rpt, group, color, len )
-	local t
+	-- local t
 
-	if group then
-		t = adverts[ tostring( group ) ]
-		if not t then
-			t = {}
-			adverts[ tostring( group ) ] = t
-		end
-	else
-		group = table.insert( adverts, {} )
-		t = adverts[ group ]
-	end
+	-- if group then
+	-- 	t = adverts[ tostring( group ) ]
+	-- 	if not t then
+	-- 		t = {}
+	-- 		adverts[ tostring( group ) ] = t
+	-- 	end
+	-- else
+	-- 	group = table.insert( adverts, {} )
+	-- 	t = adverts[ group ]
+	-- end
 
-	local id = table.insert( t, { message=message, rpt=rpt, color=color, len=len } )
+	-- local id = table.insert( t, { message=message, rpt=rpt, color=color, len=len } )
 
-	if not timer.Exists( "ULXAdvert" .. type( group ) .. group ) then
-		timer.Create( "ULXAdvert" .. type( group ) .. group, rpt, 1, function() doAdvert( group, id ) end )
-	end
+	-- if not timer.Exists( "ULXAdvert" .. type( group ) .. group ) then
+	-- 	timer.Create( "ULXAdvert" .. type( group ) .. group, rpt, 1, function() doAdvert( group, id ) end )
+	-- end
 end
 
 ------------------------------ Gimp ------------------------------
